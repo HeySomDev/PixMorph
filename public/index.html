@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1a1a2e">
+    <meta name="description" content="AI-powered premium portrait enhancement">
+    <title>PixMorph</title>
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231a1a2e' width='192' height='192'/><text x='96' y='120' font-size='80' font-weight='bold' text-anchor='middle' fill='%2300d4ff' font-family='Arial'>P</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231a1a2e' width='192' height='192'/><text x='96' y='120' font-size='80' font-weight='bold' text-anchor='middle' fill='%2300d4ff' font-family='Arial'>P</text></svg>">
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <h1 class="app-title">PixMorph</h1>
+                <p class="app-subtitle">AI Portrait Enhancement</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="app-main">
+            <!-- Upload Area -->
+            <section class="upload-section">
+                <div class="upload-zone" id="uploadZone">
+                    <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M12 2v20M7 7l5-5 5 5M2 12h20" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <h2 class="upload-title">Drag & Drop Your Photo</h2>
+                    <p class="upload-subtitle">or click to select an image</p>
+                    <input type="file" id="fileInput" class="file-input" accept="image/*" hidden>
+                </div>
+            </section>
+
+            <!-- Processing State -->
+            <section class="processing-section" id="processingSection" style="display: none;">
+                <div class="spinner"></div>
+                <p class="processing-text">Enhancing your portrait...</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <div class="results-container">
+                    <div class="image-comparison">
+                        <div class="image-wrapper">
+                            <img id="originalImage" class="result-image" alt="Original">
+                            <span class="image-label">Original</span>
+                        </div>
+                        <div class="image-wrapper">
+                            <img id="enhancedImage" class="result-image" alt="Enhanced">
+                            <span class="image-label">Enhanced</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn btn-download" id="downloadBtn">Download</button>
+                    <button class="btn btn-retry" id="retryBtn">Try Another</button>
+                </div>
+            </section>
+
+            <!-- Error State -->
+            <section class="error-section" id="errorSection" style="display: none;">
+                <div class="error-box">
+                    <h3 class="error-title">Oops! Something went wrong</h3>
+                    <p class="error-message" id="errorMessage"></p>
+                    <button class="btn btn-retry" id="errorRetryBtn">Try Again</button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>Premium AI Portrait Enhancement • Powered by PixMorph</p>
+        </footer>
+    </div>
+
+    <script src="/app.js"></script>
+</body>
+</html>
