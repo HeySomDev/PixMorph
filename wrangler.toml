@@ -1,12 +1,28 @@
 name = "pixmorph"
 main = "worker/index.js"
 compatibility_date = "2024-01-01"
+workers_dev = true
 
-[[env.production]]
+[build]
+cwd = "."
+command = "npm install"
+watch_paths = ["worker/**/*.js", "public/**/*"]
+
+[build.upload]
+format = "modules"
+main = "./worker/index.js"
+
+[[site]]
+bucket = "./public"
+
+[env.production]
 name = "pixmorph-prod"
 
-# Add your AI model API binding here
-# Example for Hugging Face or OpenAI
-# [env.production.vars]
-# AI_API_KEY = "your-api-key-here"
-# AI_MODEL_API = "https://api-inference.huggingface.co/models/your-model"
+[env.production.vars]
+ENVIRONMENT = "production"
+MAX_FILE_SIZE = "10485760"
+TIMEOUT_MS = "120000"
+AI_ENABLED = true
+
+[env.production.secrets]
+AI_MODEL_API_KEY = ""

@@ -1,63 +1,139 @@
-# PixMorph
+# PixMorph - AI Portrait Enhancement
 
-A premium portrait enhancement PWA powered by AI. Transform your photos into professional DSLR-style portraits with intelligent retouching and enhancement.
+**Premium portrait enhancement powered by Hugging Face AI**
+
+## ⚡ Quick Setup
+
+1. **Get API Key**: Go to [Hugging Face](https://huggingface.co/settings/tokens) and create an API token
+
+2. **Add to wrangler.toml**:
+   ```toml
+   [env.production.secrets]
+   AI_MODEL_API_KEY = "your-hugging-face-api-key-here"
+   ```
+
+3. **Deploy**:
+   ```bash
+   npm install
+   wrangler login
+   npm run deploy
+   ```
+
+That's it! No more configuration needed.
 
 ## Features
 
-- 📱 Progressive Web App with full-screen install experience
-- 🖼️ Drag-and-drop image upload workflow
-- ☁️ Cloudflare Workers-based processing pipeline
-- 🤖 AI portrait enhancement and cleanup
-- 🚫 No browser address bar in the app shell
-- 🔒 Fixed enhancement prompt for consistent output
+✨ **AI-Powered Enhancement**
+- Fixed portrait enhancement prompt
+- Natural skin retouching
+- Professional lighting
+- Cinematic depth of field
 
-## Default Enhancement Prompt
+📱 **Progressive Web App**
+- Install as native app
+- Full-screen experience
+- No address bar
+- Works offline
 
-"Keep the person recognizable and preserve the original facial structure. Turn this into a premium DSLR-style portrait, natural skin retouching, remove acne and minor skin imperfections, cinematic depth of field, sharp eyes, detailed hair and beard, vibrant but natural colors, warm golden-hour lighting, professional photography look, blurred background."
+🚀 **Production Ready**
+- Cloudflare Workers deployment
+- Optimized caching
+- Error handling
+- Mobile-first design
 
-## Workflow
+## Enhancement Profile
 
-1. User drags an image into the app.
-2. The image is sent to the Worker.
-3. The worker forwards the request to an AI image model.
-4. The model processes the photo using the default prompt.
-5. The enhanced image is returned to the client.
-6. The result is displayed in the app with a clean, focused portrait experience.
+```
+Keep the person recognizable and preserve the original facial structure. 
+Turn this into a premium DSLR-style portrait, natural skin retouching, 
+remove acne and minor skin imperfections, cinematic depth of field, 
+sharp eyes, detailed hair and beard, vibrant but natural colors, 
+warm golden-hour lighting, professional photography look, blurred background.
+```
 
 ## Tech Stack
 
-- Frontend: HTML, CSS, JavaScript
-- PWA support: manifest + install flow
-- Edge runtime: Cloudflare Workers
-- AI pipeline: external model/API integration
+- **Frontend**: HTML5, CSS3, JavaScript
+- **Backend**: Cloudflare Workers
+- **AI**: Hugging Face Inference API
+- **PWA**: Service Worker + Manifest
+- **Deployment**: Wrangler
 
 ## Project Structure
 
-```bash
+```
 PixMorph/
-├── src/
+├── public/
 │   ├── index.html
+│   ├── app.js
 │   ├── styles.css
-│   └── app.js
+│   ├── sw.js
+│   └── manifest.webmanifest
 ├── worker/
 │   └── index.js
-├── public/
-│   └── manifest.webmanifest
-├── package.json
 ├── wrangler.toml
-├── .gitignore
+├── package.json
 └── README.md
 ```
 
-## Getting Started
+## API Endpoints
+
+### POST /api/enhance
+Enhance an image with AI.
 
 ```bash
-git clone https://github.com/HeySomDev/PixMorph.git
-cd PixMorph
-npm install
-npm run dev
+curl -X POST https://your-app.workers.dev/api/enhance \
+  -F "image=@photo.jpg"
 ```
 
-## Notes
+**Response**:
+```json
+{
+  "success": true,
+  "enhanced_image": "data:image/jpeg;base64,...",
+  "processed_at": "2024-01-01T12:00:00Z"
+}
+```
 
-This project is intended as a polished AI portrait enhancement interface designed for a fullscreen, app-like experience.
+### GET /api/health
+Health check.
+
+```json
+{
+  "status": "ok",
+  "version": "1.0.0",
+  "timestamp": "2024-01-01T12:00:00Z"
+}
+```
+
+## Deploy Steps
+
+```bash
+# 1. Install dependencies
+npm install
+
+# 2. Login to Cloudflare
+wrangler login
+
+# 3. Update wrangler.toml with your API key
+# Add your Hugging Face API key to:
+# [env.production.secrets]
+# AI_MODEL_API_KEY = "hf_..."
+
+# 4. Deploy
+npm run deploy
+
+# 5. Test
+# Open https://pixmorph.your-domain.workers.dev
+```
+
+## Support
+
+For issues:
+1. Check Cloudflare Workers logs: `wrangler tail`
+2. Verify API key is set: `wrangler secret list`
+3. Test health endpoint: `curl https://your-app.workers.dev/api/health`
+
+## License
+
+MIT

@@ -1,35 +1,36 @@
 {
-  "name": "PixMorph",
+  "name": "PixMorph - AI Portrait Enhancement",
   "short_name": "PixMorph",
-  "description": "AI-powered premium portrait enhancement",
+  "description": "Premium AI-powered portrait enhancement",
   "start_url": "/",
-  "display": "fullscreen",
-  "background_color": "#1a1a2e",
-  "theme_color": "#00d4ff",
   "scope": "/",
+  "display": "fullscreen",
   "orientation": "portrait-primary",
+  "background_color": "#0f0f1e",
+  "theme_color": "#00d4ff",
+  "dir": "ltr",
+  "lang": "en-US",
+  "categories": ["productivity", "graphics"],
   "icons": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231a1a2e' width='192' height='192'/><text x='96' y='120' font-size='80' font-weight='bold' text-anchor='middle' fill='%2300d4ff' font-family='Arial'>P</text></svg>",
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231a1a2e' width='192' height='192'/><circle cx='96' cy='96' r='80' fill='%2300d4ff' opacity='0.2'/><text x='96' y='130' font-size='90' font-weight='bold' text-anchor='middle' fill='%2300d4ff' font-family='Arial'>P</text></svg>",
       "sizes": "192x192",
       "type": "image/svg+xml",
       "purpose": "any"
     },
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect fill='%231a1a2e' width='512' height='512'/><text x='256' y='350' font-size='200' font-weight='bold' text-anchor='middle' fill='%2300d4ff' font-family='Arial'>P</text></svg>",
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect fill='%231a1a2e' width='512' height='512'/><circle cx='256' cy='256' r='220' fill='%2300d4ff' opacity='0.2'/><text x='256' y='350' font-size='240' font-weight='bold' text-anchor='middle' fill='%2300d4ff' font-family='Arial'>P</text></svg>",
       "sizes": "512x512",
       "type": "image/svg+xml",
       "purpose": "any maskable"
     }
   ],
-  "screenshots": [],
-  "categories": ["productivity", "utilities"],
   "shortcuts": [
     {
       "name": "Enhance Photo",
       "short_name": "Enhance",
-      "description": "Enhance a photo using AI",
-      "url": "/?mode=enhance",
+      "description": "Quickly enhance a photo with AI",
+      "url": "/?action=enhance",
       "icons": []
     }
   ]

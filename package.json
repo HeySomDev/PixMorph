@@ -1,15 +1,22 @@
 {
   "name": "pixmorph",
   "version": "1.0.0",
-  "description": "AI-powered portrait enhancement PWA",
+  "description": "Premium AI-powered portrait enhancement using Cloudflare Workers",
   "main": "worker/index.js",
   "scripts": {
-    "dev": "wrangler dev",
-    "deploy": "wrangler deploy"
+    "dev": "wrangler dev --local",
+    "deploy": "wrangler deploy --env production"
   },
-  "dependencies": {
-  },
+  "keywords": [
+    "ai",
+    "portrait",
+    "enhancement",
+    "cloudflare",
+    "workers"
+  ],
+  "author": "HeySomDev",
+  "license": "MIT",
   "devDependencies": {
-    "wrangler": "^3.0.0"
+    "wrangler": "^3.34.0"
   }
 }

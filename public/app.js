@@ -1,14 +1,14 @@
 // PixMorph - Main Application Logic
+// Production PWA with AI enhancement
 
-const WORKER_URL = '/api/enhance'; // Will be available after deployment
+const WORKER_URL = '/api/enhance';
+const HEALTH_CHECK_URL = '/api/health';
 const FIXED_PROMPT = "Keep the person recognizable and preserve the original facial structure. Turn this into a premium DSLR-style portrait, natural skin retouching, remove acne and minor skin imperfections, cinematic depth of field, sharp eyes, detailed hair and beard, vibrant but natural colors, warm golden-hour lighting, professional photography look, blurred background.";
 
-// State Management
-let currentState = 'idle'; // idle, uploading, processing, results, error
+let currentState = 'idle';
 let originalImageData = null;
 let enhancedImageData = null;
 
-// DOM Elements
 const uploadZone = document.getElementById('uploadZone');
 const fileInput = document.getElementById('fileInput');
 const uploadSection = document.querySelector('.upload-section');
@@ -22,26 +22,38 @@ const retryBtn = document.getElementById('retryBtn');
 const errorRetryBtn = document.getElementById('errorRetryBtn');
 const errorMessage = document.getElementById('errorMessage');
 const progressFill = document.getElementById('progressFill');
+const processingText = document.querySelector('.processing-text');
 
-// Initialize
 function init() {
     registerServiceWorker();
     attachEventListeners();
+    checkHealth();
+    requestInstallPrompt();
 }
 
-// Service Worker Registration
 async function registerServiceWorker() {
     if ('serviceWorker' in navigator) {
         try {
             await navigator.serviceWorker.register('/sw.js');
             console.log('Service Worker registered');
         } catch (error) {
-            console.log('Service Worker registration failed:', error);
+            console.warn('Service Worker registration failed:', error);
         }
     }
 }
 
-// Event Listeners
+async function checkHealth() {
+    try {
+        const response = await fetch(HEALTH_CHECK_URL);
+        if (response.ok) {
+            const data = await response.json();
+            console.log('PixMorph Status:', data);
+        }
+    } catch (error) {
+        console.warn('Health check failed:', error);
+    }
+}
+
 function attachEventListeners() {
     uploadZone.addEventListener('click', () => fileInput.click());
     uploadZone.addEventListener('dragover', handleDragOver);
@@ -53,7 +65,6 @@ function attachEventListeners() {
     errorRetryBtn.addEventListener('click', handleRetry);
 }
 
-// Drag and Drop Handlers
 function handleDragOver(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -89,16 +100,13 @@ function handleFileSelect(e) {
     }
 }
 
-// File Processing
 async function processFile(file) {
-    // Validate file size (max 10MB)
     const maxSize = 10 * 1024 * 1024;
     if (file.size > maxSize) {
         showError('File size must be less than 10MB');
         return;
     }
 
-    // Read and display original image
     const reader = new FileReader();
     reader.onload = async (e) => {
         originalImageData = e.target.result;
@@ -110,31 +118,28 @@ async function processFile(file) {
     reader.readAsDataURL(file);
 }
 
-// Send to Worker for Enhancement
 async function enhanceImage(file) {
     try {
-        // Simulate progress
         let progress = 0;
+
         const progressInterval = setInterval(() => {
-            if (progress < 90) {
-                progress += Math.random() * 20;
-                progressFill.style.width = Math.min(progress, 90) + '%';
+            if (progress < 85) {
+                progress += Math.random() * 15;
+                progressFill.style.width = Math.min(progress, 85) + '%';
             }
         }, 500);
 
-        // Create FormData
         const formData = new FormData();
         formData.append('image', file);
         formData.append('prompt', FIXED_PROMPT);
 
-        // Send to Worker
         const response = await fetch(WORKER_URL, {
             method: 'POST',
             body: formData,
         });
 
         clearInterval(progressInterval);
-        progressFill.style.width = '100%';
+        progressFill.style.width = '95%';
 
         if (!response.ok) {
             throw new Error(`Server error: ${response.statusText}`);
@@ -144,8 +149,15 @@ async function enhanceImage(file) {
 
         if (data.success && data.enhanced_image) {
             enhancedImageData = data.enhanced_image;
-            enhancedImage.src = enhancedImageData;
-            showResults();
+
+            const img = new Image();
+            img.onload = () => {
+                enhancedImage.src = enhancedImageData;
+                progressFill.style.width = '100%';
+                setTimeout(() => showResults(), 300);
+            };
+            img.onerror = () => showError('Failed to load enhanced image');
+            img.src = enhancedImageData;
         } else {
             throw new Error(data.error || 'Failed to enhance image');
         }
@@ -155,7 +167,6 @@ async function enhanceImage(file) {
     }
 }
 
-// UI State Management
 function showProcessing() {
     currentState = 'processing';
     uploadSection.style.display = 'none';
@@ -163,6 +174,7 @@ function showProcessing() {
     resultsSection.style.display = 'none';
     errorSection.style.display = 'none';
     progressFill.style.width = '10%';
+    processingText.textContent = 'Enhancing your portrait with AI...';
 }
 
 function showResults() {
@@ -189,41 +201,41 @@ function showUpload() {
     resultsSection.style.display = 'none';
     errorSection.style.display = 'none';
     fileInput.value = '';
+    progressFill.style.width = '0%';
 }
 
-// Download Handler
 function handleDownload() {
     if (enhancedImageData) {
         const link = document.createElement('a');
         link.href = enhancedImageData;
-        link.download = `pixmorph-enhanced-${Date.now()}.png`;
+        link.download = `PixMorph-${Date.now()}.png`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
     }
 }
 
-// Retry Handler
 function handleRetry() {
     showUpload();
     originalImageData = null;
     enhancedImageData = null;
 }
 
-// Request PWA Install
 let deferredPrompt;
 
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    console.log('PWA install prompt available');
-});
+function requestInstallPrompt() {
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        console.log('PWA install available');
+    });
 
-window.addEventListener('appinstalled', () => {
-    console.log('PWA installed');
-});
+    window.addEventListener('appinstalled', () => {
+        console.log('PixMorph installed');
+        deferredPrompt = null;
+    });
+}
 
-// Initialize on load
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
 } else {
