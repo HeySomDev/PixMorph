@@ -3,26 +3,9 @@ main = "worker/index.js"
 compatibility_date = "2024-01-01"
 workers_dev = true
 
-[build]
-cwd = "."
-command = "npm install"
-watch_paths = ["worker/**/*.js", "public/**/*"]
-
-[build.upload]
-format = "modules"
-main = "./worker/index.js"
-
 [[site]]
 bucket = "./public"
+include = ["public/**/*"]
 
 [env.production]
 name = "pixmorph-prod"
-
-[env.production.vars]
-ENVIRONMENT = "production"
-MAX_FILE_SIZE = "10485760"
-TIMEOUT_MS = "120000"
-AI_ENABLED = true
-
-[env.production.secrets]
-AI_MODEL_API_KEY = ""
